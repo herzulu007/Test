@@ -1,72 +1,54 @@
-# The _LearningSpark_ Project
+Test SCALA-SPARK
+Este repositorio contiene el test de código en Scala utilizando Apache Spark. El código se ha desarrollado utilizando Spark 2.3.0.
 
-# NOTE: This code now uses Spark 2.0.0 and beyond -- if you are still using an earlier version of Spark you may want to work off the before_spark2.0.0 branch.
+Dependencias
+Este proyecto fue creado con IntelliJ Idea 14 Community Edition y utiliza las siguientes versiones:
 
-This project contains snippets of Scala code for illustrating various
-Apache Spark concepts. It is
-intended to help you _get started_ with learning Apache Spark (as a _Scala_ programmer) by providing a super easy on-ramp that _doesn't_ involve Unix, cluster configuration, building from sources or
-installing Hadoop. Many of these activities will be necessary later in your
-learning experience, after you've used these examples to achieve basic familiarity.
+JDK 1.8
+Scala 2.11.12
+Spark 2.3.0
+Cómo crear el proyecto
+Clonar el repositorio: Clona este repositorio en tu máquina local utilizando el siguiente comando:
+git clone URL_DEL_REPOSITORIO
 
-It is intended to accompany a number of posts on the blog
-[A River of Bytes](http://www.river-of-bytes.com).
-
-## Dependencies
-
-The project was created with IntelliJ Idea 14 Community Edition,
-currently using JDK 1.8, Scala 2.11.12 and Spark 2.3.0 on Ubuntu Linux.
-
-Versions of these examples for other configurations (older versions of Scala and Spark) can be
-found in various branches.
-
-## Java Examples
-
-These are much less developed than the Scala examples below.
-Note that they written to use Java 7 and Spark 2.0.0 only -- if you go back to the before_spark2.0.0 branch
-you won't find any Java examples at all. I'm adding these partly out of curiosity (because I like Java
-almost as much as Scala) and partly because of a realization that lots of Spark programmers use Java.
-There are a number of things it's important to realize I'm *not* promising to do:
-* Rush to catch up with the Scala examples
-* Keep the two sets of examples perfectly matched
-* Keep working on the Java examples
-* Add Python and R as well (this is _really_ unlikely)
-
-**Spark 2.2.0 note:** Now that support for Java 7 has been dropped, these "old-fashioned" Java examples are of
-dubious value, and I'll probably delete them soon in favor of the separate Java/Maven project mentioned below.
-I've completely stopped working on them, so I can focus on the Scala and Java 8 examples.
-
-**If you are using Java 8 or later, you may be interested in the new
-[learning-spark-with-java](https://github.com/spirom/learning-spark-with-java)
-project based completely on Java 8 and Maven.**
-
-| Package | What's Illustrated    |
-|---------|-----------------------|
-| [rdd](src/main/java/rdd) | The JavaRDD: core Spark data structure -- see the local README.md in that directory for details. |
-| [dataset](src/main/java/dataset) | A range of Dataset examples (queryable collection that is statically typed) -- see the local README.md in that directory for details. |
-| [dataframe](src/main/java/dataframe) | A range of DataFrame/Dataset<Row> examples (queryable collection that is dynamically typed) -- see the local README.md in that directory for details. |
+Estructura del proyecto: El proyecto sigue la siguiente estructura de directorios:
+TestScala
+├── src
+│   └── main
+│       └── scala
+│           └── Test
+│               └── package.scala
+├── build.sbt
+└── README.md
 
 
-## Scala Examples
 
-The examples can be found under src/main/scala. The best way to use them is to start by reading the code and its comments. Then, since each file contains an object definition with a main method, run it and consider the output. Relevant blog posts and StackOverflow answers are listed in the various package README.md files.
+Ejecuta la aplicación: Desde la terminal:
+sbt run
+Esto compilará el código y ejecutará la aplicación.
 
-| Package or File                  | What's Illustrated    |
-|---------------------------------|-----------------------|
-|          Ex1_SimpleRDD         | How to execute your first, very simple, Spark Job. See also [An easy way to start learning Spark](http://www.river-of-bytes.com/2014/11/an-easy-way-to-start-learning-spark.html).
-|          Ex2_Computations      | How RDDs work in more complex computations. See also [Spark computations](http://www.river-of-bytes.com/2014/11/spark-computations.html). |
-|          Ex3_CombiningRDDs     | Operations on multiple RDDs |
-|          Ex4_MoreOperationsOnRDDs | More complex operations on individual RDDs |
-|          Ex5_Partitions        | Explicit control of partitioning for performance and scalability. |
-|          Ex6_Accumulators | How to use Spark accumulators to efficiently gather the results of distributed computations. |
-| [hiveql](src/main/scala/hiveql)  | Using HiveQL features in a HiveContext. See the local README.md in that directory for details. |
-| [special](src/main/scala/special) | Special/adbanced RDD examples -- see the local README.md in that directory for details. |
-| [dataset](src/main/scala/dataset) | A range of Dataset examples (queryable collection that is statically typed) -- see the local README.md in that directory for details. |
-| [dataframe](src/main/scala/dataframe) | A range of DataFrame examples (queryable collection that is dynamically -- and weakly -- typed)-- see the local README.md in that directory for details. |
-| [sql](src/main/scala/sql) | A range of SQL examples -- see the local README.md in that directory for details.  |
-| datasourcev2 | New experimental API for developing external data sources, as of Spark 2.3.0 -- removed in favor of the new repository [https://github.com/spirom/spark-data-sources](https://github.com/spirom/spark-data-sources), which explores the new API in some detail. |
-| [streaming](src/main/scala/streaming) | Streaming examples -- see the local README.md in that directory for details.  |
-| [streaming/structured](src/main/scala/streaming/structured) | Structured streaming examples (Spark 2.0) -- see the local README.md in that directory for details.  |
-| [graphx](src/main/scala/graphx) | A range of GraphX examples -- see the local README.md in that directory for details. |
+ Para mejorar el rendimiento de las operaciones join en spark propongo las siguientes opciones 
+Particiona los DataFrames:
 
+Cuando se trabaja con joins en Spark, es importante asegurarse de que los DataFrames involucrados estén particionados adecuadamente. Si es posible, se debe utilizar la misma columna de partición para ambos DataFrames. Para redistribuir los datos antes del join, se puede emplear .repartition("columna_de_particion").
 
-Additional Scala code is "work in progress". 
+Persiste los DataFrames:
+
+Si se planea reutilizar un DataFrame en múltiples operaciones, se debe considerar persistirlo en memoria o en disco para evitar recalculaciones innecesarias. Esto se puede lograr utilizando .persist(StorageLevel.MEMORY_AND_DISK) o .persist(StorageLevel.MEMORY_AND_DISK_SER) según las necesidades específicas.
+
+Ajusta la configuración de Spark:
+
+Es fundamental configurar adecuadamente la memoria y el número de particiones en el entorno Spark. Se pueden ajustar parámetros como spark.sql.shuffle.partitions para controlar el número de particiones utilizadas en las operaciones de shuffle.
+
+Evita joins cartesianos:
+
+Los joins cartesianos (cross joins) pueden ser costosos en términos de rendimiento y uso de memoria. Siempre que sea posible, se debe optar por joins basados en columnas específicas en lugar de cross joins.
+
+Optimiza las condiciones de join:
+
+Es importante asegurarse de que las condiciones de join sean lo más específicas posible. Se deben evitar joins innecesarios o condiciones de join complejas.
+
+Monitorea el uso de recursos:
+
+Se recomienda utilizar herramientas de monitoreo para verificar el uso de memoria, CPU y disco durante las operaciones de join. Mantener un ojo en los recursos ayudará a identificar posibles cuellos de botella y optimizar el rendimiento de las operaciones.
+ 
